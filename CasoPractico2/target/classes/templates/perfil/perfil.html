@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Perfil</title>
+</head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"></header>
+    
+    <section class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-user-circle"></i> Mi Perfil
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <i class="fas fa-user-circle fa-5x text-primary"></i>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong><i class="fas fa-id-card"></i> ID de Usuario:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.idUsuario}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong><i class="fas fa-user"></i> Nombre Completo:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.nombreCompleto}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong><i class="fas fa-envelope"></i> Correo Electrónico:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.correoElectronico}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong><i class="fas fa-user-tag"></i> Rol Asignado:</strong></div>
+                                <div class="col-md-8">
+                                    <span class="badge bg-primary fs-6" th:text="${usuario.rol.nombreRol}"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong><i class="fas fa-info-circle"></i> Descripción del Rol:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.rol.descripcion}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong><i class="fas fa-toggle-on"></i> Estado de la Cuenta:</strong></div>
+                                <div class="col-md-8">
+                                    <span th:if="${usuario.activo}" class="badge bg-success fs-6">
+                                        <i class="fas fa-check-circle"></i> Cuenta Activa
+                                    </span>
+                                    <span th:unless="${usuario.activo}" class="badge bg-danger fs-6">
+                                        <i class="fas fa-times-circle"></i> Cuenta Inactiva
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong><i class="fas fa-calendar-plus"></i> Fecha de Registro:</strong></div>
+                                <div class="col-md-8" th:text="${#temporals.format(usuario.fechaCreacion, 'dd/MM/yyyy HH:mm:ss')}"></div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Información:</strong> Si necesitas actualizar tu información de perfil, 
+                                contacta al administrador del sistema.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer th:replace="~{layout/plantilla :: footer}"></footer>
+</body>
+</html>

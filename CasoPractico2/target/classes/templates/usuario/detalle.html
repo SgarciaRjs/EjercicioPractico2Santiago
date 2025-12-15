@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Usuario</title>
+</head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"></header>
+    
+    <section class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-user-circle"></i> Detalle del Usuario
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>ID:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.id}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Nombre:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.nombre}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Apellido:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.apellido}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Nombre Completo:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.nombreCompleto}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Correo Electrónico:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.email}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Rol:</strong></div>
+                                <div class="col-md-8">
+                                    <span class="badge bg-primary" th:text="${usuario.rol.nombre}"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Estado:</strong></div>
+                                <div class="col-md-8">
+                                    <span th:if="${usuario.activo}" class="badge bg-success">Activo</span>
+                                    <span th:unless="${usuario.activo}" class="badge bg-danger">Inactivo</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Fecha de Creación:</strong></div>
+                                <div class="col-md-8" th:text="${#temporals.format(usuario.fechaCreacion, 'dd/MM/yyyy HH:mm:ss')}"></div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4"><strong>Descripción del Rol:</strong></div>
+                                <div class="col-md-8" th:text="${usuario.rol.descripcion}"></div>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <a th:href="@{/usuarios/listado}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Volver
+                                </a>
+                                <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}" 
+                                   class="btn btn-warning">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer th:replace="~{layout/plantilla :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultas Avanzadas</title>
+</head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"></header>
+    
+    <section class="main-content">
+        <div class="container">
+            <h2 class="mb-4"><i class="fas fa-search"></i> Consultas Avanzadas</h2>
+            
+            <!-- Panel de estadísticas -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5><i class="fas fa-user-check"></i> Usuarios Activos</h5>
+                            <h2 th:text="${usuariosActivos}"></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h5><i class="fas fa-user-times"></i> Usuarios Inactivos</h5>
+                            <h2 th:text="${usuariosInactivos}"></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5><i class="fas fa-users"></i> Total de Usuarios</h5>
+                            <h2 th:text="${usuariosActivos + usuariosInactivos}"></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Formularios de búsqueda -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fas fa-user-tag"></i> Buscar por Rol
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/consultas/porRol}" method="post">
+                                <div class="mb-3">
+                                    <select class="form-select" name="idRol" required>
+                                        <option value="">Seleccione un rol</option>
+                                        <option th:each="rol : ${roles}" 
+                                                th:value="${rol.idRol}" 
+                                                th:text="${rol.nombreRol}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            <i class="fas fa-calendar"></i> Buscar por Fechas
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/consultas/porFechas}" method="post">
+                                <div class="mb-2">
+                                    <label class="form-label">Fecha Inicio</label>
+                                    <input type="date" class="form-control" name="fechaInicio" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Fecha Fin</label>
+                                    <input type="date" class="form-control" name="fechaFin" required>
+                                </div>
+                                <button type="submit" class="btn btn-warning w-100">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <i class="fas fa-keyboard"></i> Buscar por Texto
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/consultas/porTexto}" method="post">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" 
+                                           name="textoBusqueda" 
+                                           placeholder="Nombre o correo" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Resultados de búsqueda -->
+            <div th:if="${resultados != null}" class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list"></i> Resultados: 
+                        <span th:text="${tipoBusqueda}"></span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div th:if="${resultados.isEmpty()}" class="alert alert-warning">
+                        No se encontraron resultados para esta búsqueda
+                    </div>
+                    <div th:unless="${resultados.isEmpty()}" class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Fecha Creación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="usuario : ${resultados}">
+                                    <td th:text="${usuario.idUsuario}"></td>
+                                    <td th:text="${usuario.nombreCompleto}"></td>
+                                    <td th:text="${usuario.correoElectronico}"></td>
+                                    <td>
+                                        <span class="badge bg-primary" th:text="${usuario.rol.nombreRol}"></span>
+                                    </td>
+                                    <td>
+                                        <span th:if="${usuario.activo}" class="badge bg-success">Activo</span>
+                                        <span th:unless="${usuario.activo}" class="badge bg-danger">Inactivo</span>
+                                    </td>
+                                    <td th:text="${#temporals.format(usuario.fechaCreacion, 'dd/MM/yyyy')}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usuarios más recientes -->
+            <div th:if="${usuariosRecientes != null}" class="card mt-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock"></i> Usuarios Más Recientes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Rol</th>
+                                    <th>Fecha Creación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="usuario, iterStat : ${usuariosRecientes}" 
+                                    th:if="${iterStat.index < 5}">
+                                    <td th:text="${usuario.nombreCompleto}"></td>
+                                    <td th:text="${usuario.correoElectronico}"></td>
+                                    <td>
+                                        <span class="badge bg-primary" th:text="${usuario.rol.nombreRol}"></span>
+                                    </td>
+                                    <td th:text="${#temporals.format(usuario.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer th:replace="~{layout/plantilla :: footer}"></footer>
+</body>
+</html>

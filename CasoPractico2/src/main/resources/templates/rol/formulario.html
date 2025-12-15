@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Rol</title>
+</head>
+<body>
+    <header th:replace="~{layout/plantilla :: header}"></header>
+    
+    <section class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-user-tag"></i>
+                                <span th:text="${rol.id != null ? 'Editar Rol' : 'Nuevo Rol'}"></span>
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/roles/guardar}" th:object="${rol}" method="post">
+                                <input type="hidden" th:field="*{id}">
+                                
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">
+                                        <i class="fas fa-tag"></i> Nombre del Rol *
+                                    </label>
+                                    <input type="text" class="form-control" id="nombre" 
+                                           th:field="*{nombre}" required 
+                                           placeholder="Ej: ADMIN, PROFESOR, ESTUDIANTE">
+                                    <small class="text-muted">Use mayúsculas sin espacios</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label">
+                                        <i class="fas fa-align-left"></i> Descripción
+                                    </label>
+                                    <textarea class="form-control" id="descripcion" 
+                                              th:field="*{descripcion}" rows="3"
+                                              placeholder="Describa las responsabilidades de este rol"></textarea>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a th:href="@{/roles/listado}" class="btn btn-secondary">
+                                        <i class="fas fa-times"></i> Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Guardar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer th:replace="~{layout/plantilla :: footer}"></footer>
+</body>
+</html>
